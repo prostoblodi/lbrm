@@ -1,18 +1,36 @@
+import sys
 import psutil
 
-f = 0
-s = ''
-plist = psutil.sensors_temperatures(False)
+names = []
+labels = []
+currents = []
+highs = []
+criticals = []
 
-print(psutil.cpu_stats())
-print(psutil.cpu_freq())
-print(psutil.cpu_count())
-print(psutil.cpu_times())
-print(psutil.cpu_percent(1))
-print(psutil.cpu_times_percent(1))
+if not hasattr(psutil, "sensors_temperatures"):
+    sys.exit("platform not supported")
 
-print(plist)
+temps = psutil.sensors_temperatures()
 
-for i in plist:
-    f += 1
-    print(f"INFO {f}: {i} = {plist[i]}")
+if not temps:
+    sys.exit("can't read any temperature")
+
+for name, entries in temps.items():
+    names.append(name)
+    for entry in entries:
+        labels.append(entry.label)
+        currents.append(entry.current)
+        highs.append(entry.high)
+        criticals.append(entry.critical)
+match int(input("Choose - ")):
+    case 1:
+        print(names)
+    case 2:
+        print(currents)
+    case 3:
+        print(highs)
+    case 4:
+        print(criticals)
+    case 5:
+        print(names)
+
