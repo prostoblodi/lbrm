@@ -9,9 +9,12 @@ class LBRM(QWidget):
 
     def __init__(self):
         super().__init__()
+
         self.timer = None
         self.layout = None
-        self.old_data = {}  # Для отслеживания изменений данных
+
+        self.old_data = {}
+
         self.init_ui()
 
     def init_ui(self):
@@ -19,27 +22,21 @@ class LBRM(QWidget):
         self.setFixedSize(800, 800)
         self.setStyleSheet("background-color: #000000; color: #ffffff;")
 
-        # Основной контейнер для QScrollArea
         container = QWidget(self)
 
-        # Прокручиваемая область
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(container)
 
-        # Главный макет окна
         main_layout = QVBoxLayout()
         main_layout.addWidget(scroll_area)
         self.setLayout(main_layout)
 
-        # Макет для содержимого внутри контейнера
         self.layout = QVBoxLayout()
         container.setLayout(self.layout)
 
-        # Запуск первого обновления данных
         self.update_data()
 
-        # Таймер для периодического обновления
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_data)
         self.timer.start(500)
@@ -47,19 +44,16 @@ class LBRM(QWidget):
         self.show()
 
     def update_data(self):
-        # Проверка на изменения данных
         calculates.calculate()
         if data == self.old_data:
             return
         self.old_data = data.copy()
 
-        # Очистка старых виджетов
         while self.layout.count():
             item = self.layout.takeAt(0)
             if item.widget():
                 item.widget().deleteLater()
 
-        # Добавление новых данных
         for category, items in data.items():
             label_title = QLabel(f"{category}", self)
             label_title.setFont(QFont("Inria Sans", 20))
@@ -86,10 +80,3 @@ class LBRM(QWidget):
                         margin-bottom: 5px;
                     """)
                     self.layout.addWidget(label_item)
-
-if __name__ == "__main__":
-    import sys
-
-    app = QApplication(sys.argv)
-    window = LBRM()
-    sys.exit(app.exec())
