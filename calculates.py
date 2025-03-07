@@ -18,4 +18,4 @@ def calculate():
         for entry in entries:
             data[name].append({entry.label: [entry.current, entry.high, entry.critical]})
 
-    print(data)
+        print(data[name])

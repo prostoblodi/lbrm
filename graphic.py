@@ -62,7 +62,7 @@ class LBRM(QWidget):
                 font-size: 20px;
                 font-family: 'Inria Sans';
                 color: #ffffff;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
             """)
             self.layout.addWidget(label_title)
 
