@@ -2,6 +2,7 @@ import sys
 import psutil
 
 data = {}
+debug_mode = False
 
 if not hasattr(psutil, "sensors_temperatures"):
     sys.exit("platform not supported")
@@ -18,4 +19,5 @@ def calculate():
         for entry in entries:
             data[name].append({entry.label: [entry.current, entry.high, entry.critical]})
 
-        print(data[name])
+        if debug_mode:
+            print(data[name])
