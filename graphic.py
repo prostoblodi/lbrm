@@ -71,7 +71,7 @@ class LBRM(QWidget):
 
             self.layout.addWidget(button_title)
             if category not in self.buttons_data:
-                self.buttons_data[category] = False
+                self.buttons_data[category] = True
             button_title.clicked.connect(lambda _, cat=category: self.change_button_data(cat))
             if self.buttons_data[category]:
                 for item in items:
