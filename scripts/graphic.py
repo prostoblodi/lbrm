@@ -1,9 +1,9 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QApplication, QPushButton, QMessageBox
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QFont
 
-import calculates
-from calculates import data
+import scripts.calculates as calc
+from scripts.calculates import data
 
 class LBRM(QWidget):
 
@@ -47,7 +47,7 @@ class LBRM(QWidget):
         self.show()
 
     def update_data(self):
-        calculates.calculate(self.arguments)
+        calc.calculate(self.arguments)
         if data == self.old_data:
             return
         self.old_data = data.copy()
