@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QApplication
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QApplication, QPushButton, QMessageBox
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QFont
 
@@ -7,11 +7,14 @@ from calculates import data
 
 class LBRM(QWidget):
 
-    def __init__(self):
+    def __init__(self, arguments):
         super().__init__()
+
+        self.arguments = arguments
 
         self.timer = None
         self.layout = None
+        self.buttons_data = {}
 
         self.old_data = {}
 
@@ -44,7 +47,7 @@ class LBRM(QWidget):
         self.show()
 
     def update_data(self):
-        calculates.calculate()
+        calculates.calculate(self.arguments)
         if data == self.old_data:
             return
         self.old_data = data.copy()
@@ -55,28 +58,39 @@ class LBRM(QWidget):
                 item.widget().deleteLater()
 
         for category, items in data.items():
-            label_title = QLabel(f"{category}", self)
-            label_title.setFont(QFont("Inria Sans", 20))
-            label_title.setAlignment(Qt.AlignmentFlag.AlignLeft)
-            label_title.setStyleSheet("""
+            button_title = QPushButton(f"{category}", self)
+            button_title.setFont(QFont("Inria Sans", 20))
+            button_title.setStyleSheet("""
                 font-size: 20px;
                 font-family: 'Inria Sans';
                 color: #ffffff;
                 margin-bottom: 5px;
+                text-align: left;
+                padding: 5px;
             """)
-            self.layout.addWidget(label_title)
 
-            for item in items:
-                for subcategory, values in item.items():
-                    values_cleaned = ", ".join(str(v) for v in values if v is not None)
-                    label_item = QLabel(f"{subcategory if subcategory else 'Unnamed'}: {values_cleaned}", self)
-                    label_item.setFont(QFont("Inria Sans", 18))
-                    label_item.setAlignment(Qt.AlignmentFlag.AlignLeft)
-                    label_item.setStyleSheet("""
-                        font-size: 18px;
-                        font-family: 'Inria Sans';
-                        color: #cccccc;
-                        padding-left: 20px;
-                        margin-bottom: 5px;
-                    """)
-                    self.layout.addWidget(label_item)
+            self.layout.addWidget(button_title)
+            if category not in self.buttons_data:
+                self.buttons_data[category] = False
+            button_title.clicked.connect(lambda _, cat=category: self.change_button_data(cat))
+            if self.buttons_data[category]:
+                for item in items:
+                    for subcategory, values in item.items():
+                        values_cleaned = ", ".join(str(v) for v in values if v is not None)
+                        label_item = QLabel(f"{subcategory if subcategory else 'Unnamed'}: {values_cleaned}", self)
+                        label_item.setFont(QFont("Inria Sans", 18))
+                        label_item.setAlignment(Qt.AlignmentFlag.AlignLeft)
+                        label_item.setStyleSheet("""
+                                font-size: 18px;
+                                font-family: 'Inria Sans';
+                                color: #cccccc;
+                                padding-left: 20px;
+                                margin-bottom: 5px;
+                                """)
+                        self.layout.addWidget(label_item)
+    def change_button_data(self, category):
+        if self.buttons_data[category]:
+            self.buttons_data[category] = False
+        elif not self.buttons_data[category]:
+            self.buttons_data[category] = True
+        if (len(self.arguments) >= 3 and self.arguments[2] == '1') or (len(self.arguments) >= 1 and self.arguments[1] == '1'): print(f"BUTTONS_DATA :: {category} : {self.buttons_data[category]}")

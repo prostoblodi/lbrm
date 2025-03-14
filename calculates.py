@@ -2,12 +2,11 @@ import sys
 import psutil
 
 data = {}
-debug_mode = False
 
 if not hasattr(psutil, "sensors_temperatures"):
     sys.exit("platform not supported")
 
-def calculate():
+def calculate(arguments):
     global data
     temps = psutil.sensors_temperatures()
 
@@ -19,5 +18,5 @@ def calculate():
         for entry in entries:
             data[name].append({entry.label: [entry.current, entry.high, entry.critical]})
 
-        if debug_mode:
-            print(data[name])
+        if (len(arguments) >= 2 and arguments[1] == '1') or (len(arguments) >= 4 and arguments[3] == '1'): print("** DATA[NAME]:: ", data[name])
+    if (len(arguments) >= 2 and arguments[1] == '1') or (len(arguments) >= 4 and arguments[3] == '1'): print("&& DATA::", data)
