@@ -1,4 +1,5 @@
 # Resource monitor, writen at python, only for linux.
+![изображение](https://github.com/user-attachments/assets/dcc4f121-8db7-446d-b3c1-3aec00da4dbb)
 
 # How to use latest realease(the latest stable version)
 
