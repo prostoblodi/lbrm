@@ -1,7 +1,8 @@
 # Resource monitor, writen at python, only for linux.
-![изображение](https://github.com/user-attachments/assets/dcc4f121-8db7-446d-b3c1-3aec00da4dbb)
+![изображение](https://github.com/user-attachments/assets/96ff9b4a-af0c-4bba-b22d-98d41b9b3c9c)
 
-(realease v0.1)
+
+(not any realease)
 # How to use latest realease(the latest stable version)
 
 Just download LBRM.zip from latest realease(at Mar 14 of 2025 this is v0.1) and run main
