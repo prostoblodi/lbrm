@@ -1,12 +1,10 @@
-import os
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtGui import QFont
 from functools import partial
 import scripts.calculates as calc
 from scripts.calculates import data
 
-# image_path = os.path.join(os.path.dirname(__file__), '../assets/arrow.png')
 
 class LBRM(QWidget):
 
@@ -77,6 +75,7 @@ class LBRM(QWidget):
                 padding: 5px;
             """)
 
+            self.add_hover_effect(button_title, "#ffffff", "#aaaaaa")
             self.layout.addWidget(button_title)
 
             if category not in self.buttons_data:
@@ -98,20 +97,22 @@ class LBRM(QWidget):
                             padding-left: 20px;
                             margin-bottom: 5px;
                         """)
-                        self.layout.addWidget(label_item)
 
-        # # Создание QLabel для отображения изображения (стрелочка) после всех кнопок
-        # label = QLabel(self)
-        # pixmap = QPixmap(image_path)  # Укажите путь к изображению
-        # if pixmap.isNull():  # Проверка, если изображение не загружается
-        #     print("Ошибка загрузки изображения!")
-        # else:
-        #     label.setPixmap(pixmap)
-        #     label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        #     label.setFixedSize(70, 70)  # Размер стрелочки, можно подстроить
-        #     self.layout.addWidget(label)
+                        self.layout.addWidget(label_item)
 
     def change_button_data(self, category):
         self.buttons_data[category] = not self.buttons_data[category]
         if len(self.arguments) >= 2 and self.arguments[1] == '1':
             print(f"BUTTONS_DATA :: {category} : {self.buttons_data[category]}")
+
+    def add_hover_effect(self, widget, normal_color, hover_color):
+        base_stylesheet = widget.styleSheet()
+
+        def enter_event(event):
+            widget.setStyleSheet(base_stylesheet + f" color: {hover_color};")
+
+        def leave_event(event):
+            widget.setStyleSheet(base_stylesheet + f" color: {normal_color};")
+
+        widget.enterEvent = enter_event
+        widget.leaveEvent = leave_event
